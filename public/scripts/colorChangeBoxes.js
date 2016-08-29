@@ -3,6 +3,7 @@ var colorList = [
     {backgroundColor: 'blue'},
     {backgroundColor: 'red'}
 ];
+var count = 0;
 
 var ColorBoxes = React.createClass({
     handleClick: function(color){
@@ -12,6 +13,20 @@ var ColorBoxes = React.createClass({
     },
     getInitialState: function(){
         return {color: this.props.initialColor};
+    },
+    scrollColors:function(colors) {
+        var interval = setInterval(() => {
+            if(count < colors.length){
+                this.handleClick(colors[count].backgroundColor);
+            } else {
+                count = 0;
+                this.handleClick(colors[count].backgroundColor);
+            }
+            count++;
+        }, 1000);
+    },
+    endScrollColors: function(){
+      return;
     },
     render: function(){
         // this
@@ -23,8 +38,11 @@ var ColorBoxes = React.createClass({
         });
        return (
        <div>
-           <h2 style={ {color: this.state.color}}>Click a box and I change</h2>
+           <h2 style={{color: this.state.color}}>Click a box and I change</h2>
+           <h3>Color Selected: {this.state.color}</h3>
            {ColorBox}
+           <button onClick={() => this.scrollColors(colorList)}>Cycle through colors</button>
+           <button onClick={() => this.endScrollColors()}>Stop Cycling</button>
        </div>
        )
     }
